@@ -32,6 +32,7 @@ namespace esphome
                 ESP_LOGE(TAG, "Error initializing ESP-NOW");
                 return;
             }
+            esp_wifi_config_espnow_rate(WIFI_IF_STA, WIFI_PHY_RATE_LORA_250K);
             esp_wifi_set_protocol(WIFI_IF_STA, WIFI_PROTOCOL_LR);
             memcpy(peerInfo.peer_addr, broadcastAddress, 6);
             peerInfo.channel = this->wifi_channel_;

@@ -38,6 +38,8 @@ namespace esphome
 
         private:
             static int32_t last_rssi;
+            static uint32_t last_rate;
+            static int32_t last_noise_floor;
             void receivecallback(const uint8_t *bssid, const uint8_t *data, int len);
             static void call_on_data_recv_callback(const uint8_t *mac_addr, const uint8_t *incomingData, int len);
             void promcallback(void *buf, wifi_promiscuous_pkt_type_t type);

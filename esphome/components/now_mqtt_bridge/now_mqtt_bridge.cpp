@@ -11,6 +11,8 @@ namespace esphome
     {
         static const char *const TAG = "now_mqtt_bridge.sensor";
         int32_t Now_MQTT_BridgeComponent::last_rssi = 0;
+        uint32_t Now_MQTT_BridgeComponent::last_rate = 0;
+        int32_t Now_MQTT_BridgeComponent::last_noise_floor = 0;
 
         void Now_MQTT_BridgeComponent::receivecallback(const uint8_t *bssid, const uint8_t *data, int len)
         {
@@ -187,6 +189,8 @@ namespace esphome
             snprintf(topic, sizeof(topic), sensor_topic, tokens[0], "rssi");
             std::string last_rssi_str = std::to_string(last_rssi);
             mqtt::global_mqtt_client->publish(topic, last_rssi_str.c_str(), last_rssi_str.length(), 2, true);
+            ESP_LOGI(TAG, "rate: %d  rssi: %d  noisefloor: %d", last_rate, last_rssi, last_noise_floor);
+
         }
 
         float Now_MQTT_BridgeComponent::get_setup_priority() const { return setup_priority::AFTER_CONNECTION; }
@@ -247,6 +251,8 @@ namespace esphome
             if (((ipkt->category_code) == 127) && (memcmp(ipkt->oui, esp_oui, 3) == 0))
             {
                 last_rssi = ppkt->rx_ctrl.rssi;
+                last_rate = ppkt->rx_ctrl.rate;
+                last_noise_floor = ppkt->rx_ctrl.noise_floor;
             }
         }
         void Now_MQTT_BridgeComponent::split(char **argv, int *argc, char *string, const char delimiter, int allowempty)
