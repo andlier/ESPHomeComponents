@@ -26,7 +26,7 @@ namespace esphome
             ESP_ERROR_CHECK(esp_wifi_start());
             ESP_ERROR_CHECK(esp_wifi_set_channel(this->wifi_channel_, WIFI_SECOND_CHAN_NONE));
             ESP_ERROR_CHECK(esp_wifi_set_protocol(WIFI_IF_STA, WIFI_PROTOCOL_LR));
-            ESP_ERROR_CHECK(esp_wifi_config_espnow_rate(WIFI_IF_STA, WIFI_PHY_RATE_LORA_500K));
+            ESP_ERROR_CHECK(esp_wifi_config_espnow_rate(WIFI_IF_STA, WIFI_PHY_RATE_LORA_250K));
 
             if (esp_now_init() != ESP_OK)
             {
@@ -34,7 +34,7 @@ namespace esphome
                 ESP_LOGE(TAG, "Error initializing ESP-NOW");
                 return;
             }
-
+            ESP_LOGI(TAG, "rate configured:  %d", WIFI_PHY_RATE_LORA_250K);
             memcpy(peerInfo.peer_addr, broadcastAddress, 6);
             peerInfo.channel = this->wifi_channel_;
             peerInfo.encrypt = false;
