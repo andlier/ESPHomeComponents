@@ -213,7 +213,8 @@ namespace esphome
 
             ESP_LOGD(TAG, "Setting up ESP-Now MQTT Bridge...");
             ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
-
+            ESP_ERROR_CHECK(esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_LR));
+            ESP_ERROR_CHECK(esp_wifi_config_espnow_rate(WIFI_IF_AP, WIFI_PHY_RATE_LORA_250K));
             if (esp_now_init() != ESP_OK)
             {
                 this->mark_failed();
